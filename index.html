@@ -1,319 +1,488 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="ur" dir="ltr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SanVault — Hisab Kitab</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>SanVault - Business Khata</title>
+<link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#0f172a">
+<link rel="apple-touch-icon" href="./icon-192.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <style>
-  :root {
-    --ink: #1c1a17;
-    --paper: #faf7f2;
-    --line: #ddd5c7;
-    --gold: #b8862e;
-    --green: #2f6f4f;
-    --red: #a5432f;
-    --muted: #8a8172;
+  :root{
+    --bg:#0f172a; --bg2:#151f38; --card:#1a2540; --border:#26324f;
+    --green:#22c55e; --red:#ef4444; --text:#e5e7eb; --muted:#94a3b8; --accent:#38bdf8;
   }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    font-family: 'Georgia', 'Noto Sans Devanagari', serif;
-    background: var(--paper);
-    color: var(--ink);
-    min-height: 100vh;
-  }
-  header {
-    padding: 28px 20px 18px;
-    border-bottom: 2px solid var(--ink);
-  }
-  header h1 {
-    margin: 0;
-    font-size: 28px;
-    letter-spacing: 0.5px;
-    font-weight: 700;
-  }
-  header .tag {
-    font-family: -apple-system, sans-serif;
-    font-size: 12px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-top: 4px;
-  }
-  .balance-row {
-    display: flex;
-    gap: 10px;
-    padding: 16px 20px;
-  }
-  .balance-card {
-    flex: 1;
-    background: white;
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    padding: 14px;
-    text-align: center;
-  }
-  .balance-card .label {
-    font-family: -apple-system, sans-serif;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--muted);
-  }
-  .balance-card .amt { font-size: 20px; font-weight: 700; margin-top: 4px; }
-  .amt.green { color: var(--green); }
-  .amt.red { color: var(--red); }
-
-  .input-area {
-    margin: 8px 20px 20px;
-    background: white;
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    padding: 16px;
-  }
-  .input-area textarea {
-    width: 100%;
-    border: none;
-    font-family: -apple-system, sans-serif;
-    font-size: 16px;
-    resize: none;
-    outline: none;
-    min-height: 44px;
-  }
-  .hint {
-    font-family: -apple-system, sans-serif;
-    font-size: 12px;
-    color: var(--muted);
-    margin-top: 4px;
-  }
-  .actions { display: flex; gap: 8px; margin-top: 12px; }
-  button {
-    font-family: -apple-system, sans-serif;
-    border: none;
-    border-radius: 8px;
-    padding: 12px 16px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-  }
-  .btn-in { background: var(--green); color: white; flex: 1; }
-  .btn-out { background: var(--red); color: white; flex: 1; }
-  .btn-in:disabled, .btn-out:disabled { opacity: 0.5; }
-
-  .list { margin: 0 20px 40px; }
-  .list h2 {
-    font-size: 14px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--muted);
-    font-family: -apple-system, sans-serif;
-    margin-bottom: 10px;
-  }
-  .entry {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 0;
-    border-bottom: 1px solid var(--line);
-  }
-  .entry .note { font-size: 15px; }
-  .entry .cat {
-    font-family: -apple-system, sans-serif;
-    font-size: 11px;
-    color: var(--gold);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-top: 2px;
-  }
-  .entry .val { font-weight: 700; font-family: -apple-system, sans-serif; }
-  .empty {
-    text-align: center;
-    color: var(--muted);
-    font-family: -apple-system, sans-serif;
-    padding: 30px 0;
-    font-size: 14px;
-  }
-  .loading { color: var(--gold); font-style: italic; }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  body{margin:0; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background:var(--bg); color:var(--text); padding-bottom:70px;}
+  header{position:sticky; top:0; z-index:10; background:var(--bg2); padding:14px 16px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;}
+  header h1{font-size:18px; margin:0; display:flex; align-items:center; gap:8px;}
+  header h1 span.dot{width:10px;height:10px;background:var(--green);border-radius:50%;display:inline-block;}
+  select#currency{background:var(--card); color:var(--text); border:1px solid var(--border); border-radius:8px; padding:6px 8px; font-size:13px;}
+  .container{padding:16px; max-width:520px; margin:0 auto;}
+  .card{background:var(--card); border:1px solid var(--border); border-radius:14px; padding:16px; margin-bottom:14px;}
+  .summary-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px;}
+  .stat{background:var(--card); border:1px solid var(--border); border-radius:14px; padding:14px;}
+  .stat .label{font-size:12px; color:var(--muted); margin-bottom:6px;}
+  .stat .value{font-size:19px; font-weight:700;}
+  .stat.income .value{color:var(--green);}
+  .stat.expense .value{color:var(--red);}
+  .stat.net .value{color:var(--accent);}
+  .stat.owed .value{color:#f59e0b;}
+  h2{font-size:15px; margin:0 0 10px 0; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:.5px;}
+  .tabs{display:flex; gap:6px; margin-bottom:14px; background:var(--bg2); padding:4px; border-radius:12px;}
+  .tab{flex:1; text-align:center; padding:9px 4px; border-radius:9px; font-size:13px; color:var(--muted); cursor:pointer; user-select:none;}
+  .tab.active{background:var(--accent); color:#0f172a; font-weight:600;}
+  .view{display:none;}
+  .view.active{display:block;}
+  input, select, textarea{width:100%; background:var(--bg2); border:1px solid var(--border); color:var(--text); border-radius:10px; padding:11px 12px; font-size:15px; margin-bottom:10px;}
+  label{font-size:12px; color:var(--muted); display:block; margin-bottom:4px;}
+  .row2{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  button{cursor:pointer; border:none; border-radius:10px; padding:12px; font-size:15px; font-weight:600; width:100%;}
+  .btn-primary{background:var(--accent); color:#0f172a;}
+  .btn-green{background:var(--green); color:#0f172a;}
+  .btn-red{background:var(--red); color:#fff;}
+  .btn-ghost{background:var(--bg2); color:var(--text); border:1px solid var(--border);}
+  .type-toggle{display:flex; gap:8px; margin-bottom:10px;}
+  .type-toggle div{flex:1; text-align:center; padding:10px; border-radius:10px; border:1px solid var(--border); cursor:pointer; font-size:14px;}
+  .type-toggle div.active-income{background:rgba(34,197,94,.15); border-color:var(--green); color:var(--green);}
+  .type-toggle div.active-expense{background:rgba(239,68,68,.15); border-color:var(--red); color:var(--red);}
+  .entry{display:flex; justify-content:space-between; align-items:center; padding:11px 0; border-bottom:1px solid var(--border);}
+  .entry:last-child{border-bottom:none;}
+  .entry .left{display:flex; flex-direction:column;}
+  .entry .cat{font-size:14px; font-weight:600;}
+  .entry .meta{font-size:11px; color:var(--muted); margin-top:2px;}
+  .entry .amt{font-weight:700; font-size:15px;}
+  .amt.income{color:var(--green);}
+  .amt.expense{color:var(--red);}
+  .empty{text-align:center; color:var(--muted); padding:30px 10px; font-size:14px;}
+  .customer-row{display:flex; justify-content:space-between; align-items:center; padding:13px 0; border-bottom:1px solid var(--border); cursor:pointer;}
+  .customer-row:last-child{border-bottom:none;}
+  .customer-row .name{font-weight:600; font-size:15px;}
+  .customer-row .bal{font-weight:700; font-size:15px;}
+  .bal.they-owe{color:var(--green);}
+  .bal.you-owe{color:var(--red);}
+  .bal.settled{color:var(--muted);}
+  .fab{position:fixed; bottom:78px; right:18px; width:56px; height:56px; border-radius:50%; background:var(--accent); color:#0f172a; font-size:28px; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 14px rgba(0,0,0,.4); z-index:20;}
+  .bottomnav{position:fixed; bottom:0; left:0; right:0; background:var(--bg2); border-top:1px solid var(--border); display:flex; z-index:15;}
+  .navitem{flex:1; text-align:center; padding:10px 4px 8px; color:var(--muted); font-size:11px; cursor:pointer;}
+  .navitem.active{color:var(--accent);}
+  .navitem .icon{font-size:19px; display:block; margin-bottom:2px;}
+  .modal-bg{display:none; position:fixed; inset:0; background:rgba(0,0,0,.6); z-index:50; align-items:flex-end;}
+  .modal-bg.show{display:flex;}
+  .modal{background:var(--bg2); width:100%; border-radius:18px 18px 0 0; padding:20px; max-height:88vh; overflow-y:auto;}
+  .modal h3{margin-top:0;}
+  .close-x{position:absolute; right:20px; top:16px; font-size:22px; color:var(--muted); cursor:pointer;}
+  .badge{display:inline-block; font-size:10px; background:rgba(56,189,248,.15); color:var(--accent); padding:2px 7px; border-radius:6px; margin-left:6px;}
+  .installbar{background:linear-gradient(90deg,#0891b2,#0284c7); padding:10px 14px; font-size:13px; display:flex; justify-content:space-between; align-items:center; gap:10px; display:none;}
+  .installbar.show{display:flex;}
+  .installbar button{width:auto; padding:7px 14px; font-size:12px; background:#fff; color:#0284c7;}
+  .txn-list{max-height:340px; overflow-y:auto;}
+  small.hint{color:var(--muted); font-size:11px; display:block; margin-top:-6px; margin-bottom:10px;}
 </style>
 </head>
 <body>
 
-<header style="display:flex; justify-content:space-between; align-items:flex-start;">
-  <div>
-    <h1>SanVault</h1>
-    <div class="tag">Smart Hisab-Kitab · AI se Auto-Categorize</div>
-  </div>
-  <select id="currencySelect" style="font-family:-apple-system,sans-serif; font-size:13px; padding:6px 8px; border-radius:6px; border:1px solid var(--line); background:white; height:32px;">
-    <option value="₨">₨ PKR</option>
-    <option value="₹">₹ INR</option>
-    <option value="$">$ USD</option>
-    <option value="£">£ GBP</option>
-    <option value="€">€ EUR</option>
-    <option value="AED">AED</option>
-  </select>
+<div class="installbar" id="installbar">
+  <span>📲 SanVault install karein — home screen se app jaisa chalega</span>
+  <button id="installBtn">Install</button>
+</div>
+
+<header>
+  <h1><span class="dot"></span> SanVault</h1>
+  <select id="currency"></select>
 </header>
 
-<div class="balance-row">
-  <div class="balance-card">
-    <div class="label">Aaya (In)</div>
-    <div class="amt green" id="totalIn">₹0</div>
+<div class="container">
+
+  <div class="view active" id="view-home">
+    <div class="summary-grid">
+      <div class="stat income"><div class="label">Total Income</div><div class="value" id="totalIncome">0</div></div>
+      <div class="stat expense"><div class="label">Total Expense</div><div class="value" id="totalExpense">0</div></div>
+      <div class="stat net"><div class="label">Net Balance</div><div class="value" id="netBalance">0</div></div>
+      <div class="stat owed"><div class="label">Khata (Net Owed)</div><div class="value" id="netOwed">0</div></div>
+    </div>
+
+    <div class="card">
+      <h2>Recent Transactions</h2>
+      <div id="recentList" class="txn-list"><div class="empty">Koi entry nahi. + button se shuru karein.</div></div>
+    </div>
   </div>
-  <div class="balance-card">
-    <div class="label">Gaya (Out)</div>
-    <div class="amt red" id="totalOut">₹0</div>
+
+  <div class="view" id="view-ledger">
+    <div class="card">
+      <h2>Sab Transactions</h2>
+      <div id="fullList" class="txn-list"><div class="empty">Koi entry nahi.</div></div>
+    </div>
   </div>
-  <div class="balance-card">
-    <div class="label">Balance</div>
-    <div class="amt" id="balance">₹0</div>
+
+  <div class="view" id="view-khata">
+    <div class="card">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <h2 style="margin:0;">Customers / Suppliers</h2>
+      </div>
+      <div id="customerList"><div class="empty">Koi customer nahi. Neeche se add karein.</div></div>
+    </div>
+    <button class="btn-primary" id="addCustomerBtn">+ Naya Customer/Supplier</button>
+  </div>
+
+</div>
+
+<div class="fab" id="fabAdd">+</div>
+
+<div class="bottomnav">
+  <div class="navitem active" data-view="home"><span class="icon">🏠</span>Overview</div>
+  <div class="navitem" data-view="ledger"><span class="icon">📒</span>Ledger</div>
+  <div class="navitem" data-view="khata"><span class="icon">🤝</span>Khata</div>
+</div>
+
+<!-- Add Transaction Modal -->
+<div class="modal-bg" id="txnModalBg">
+  <div class="modal" style="position:relative;">
+    <span class="close-x" data-close="txnModalBg">×</span>
+    <h3>Nayi Entry</h3>
+    <div class="type-toggle">
+      <div id="toggleIncome" class="active-income">💰 Income</div>
+      <div id="toggleExpense">💸 Expense</div>
+    </div>
+    <label>Description (Hindi/English/Urdu mix chalega)</label>
+    <input id="txnDesc" placeholder="masalan: dukaan ka kiraya, customer se payment...">
+    <small class="hint" id="autoCatHint"></small>
+    <div class="row2">
+      <div>
+        <label>Amount</label>
+        <input id="txnAmount" type="number" inputmode="decimal" placeholder="0">
+      </div>
+      <div>
+        <label>Category</label>
+        <select id="txnCategory"></select>
+      </div>
+    </div>
+    <label>Customer/Supplier (optional - khata ke liye)</label>
+    <select id="txnCustomer"><option value="">— None —</option></select>
+    <button class="btn-primary" id="saveTxnBtn">Save Entry</button>
   </div>
 </div>
 
-<div class="input-area">
-  <textarea id="entryText" placeholder="Jaise: '500 chai ke liye diye' ya 'received 2000 from Ramesh'"></textarea>
-  <div class="hint" id="statusHint">Hindi, English, ya dono mix mein likh sakte hain — AI khud samajh lega.</div>
-  <div class="actions">
-    <button class="btn-in" id="addIn">+ Paisa Aaya</button>
-    <button class="btn-out" id="addOut">− Paisa Gaya</button>
+<!-- Add Customer Modal -->
+<div class="modal-bg" id="custModalBg">
+  <div class="modal" style="position:relative;">
+    <span class="close-x" data-close="custModalBg">×</span>
+    <h3>Naya Customer/Supplier</h3>
+    <label>Naam</label>
+    <input id="custName" placeholder="masalan: Ahmed Traders">
+    <label>Opening Balance (agar pehle se udhaar hai)</label>
+    <div class="row2">
+      <select id="custOpeningType">
+        <option value="owe_me">Woh mujhe dega (They owe me)</option>
+        <option value="i_owe">Main dunga (I owe them)</option>
+      </select>
+      <input id="custOpeningAmt" type="number" inputmode="decimal" placeholder="0">
+    </div>
+    <button class="btn-primary" id="saveCustBtn">Save</button>
   </div>
 </div>
 
-<div class="list">
-  <h2>Recent Entries</h2>
-  <div id="entryList"></div>
+<!-- Customer Detail Modal -->
+<div class="modal-bg" id="custDetailBg">
+  <div class="modal" style="position:relative;">
+    <span class="close-x" data-close="custDetailBg">×</span>
+    <h3 id="custDetailName"></h3>
+    <div class="stat" style="margin-bottom:14px;">
+      <div class="label">Balance</div>
+      <div class="value" id="custDetailBal">0</div>
+    </div>
+    <div class="row2">
+      <button class="btn-green" id="custPayReceived">Received Payment</button>
+      <button class="btn-red" id="custPayGiven">Payment Diya</button>
+    </div>
+    <h2 style="margin-top:16px;">History</h2>
+    <div id="custDetailHistory" class="txn-list"></div>
+  </div>
 </div>
 
 <script>
-let entries = [];
-let currency = '₨';
+// ---------- Storage ----------
+const DB_KEY = 'sanvault_data_v1';
+function loadDB(){
+  try{
+    const raw = localStorage.getItem(DB_KEY);
+    if(raw) return JSON.parse(raw);
+  }catch(e){}
+  return { transactions: [], customers: [], currency: 'PKR' };
+}
+function saveDB(){ localStorage.setItem(DB_KEY, JSON.stringify(DB)); }
+let DB = loadDB();
 
-async function loadEntries() {
-  try {
-    const raw = localStorage.getItem('sanvault-entries');
-    entries = raw ? JSON.parse(raw) : [];
-    const savedCurrency = localStorage.getItem('sanvault-currency');
-    if (savedCurrency) currency = savedCurrency;
-    document.getElementById('currencySelect').value = currency;
-  } catch (e) {
-    entries = [];
-  }
-  render();
+// ---------- Currency ----------
+const CURRENCIES = {
+  PKR: {symbol:'Rs', name:'Pakistani Rupee'},
+  INR: {symbol:'₹', name:'Indian Rupee'},
+  USD: {symbol:'$', name:'US Dollar'},
+  GBP: {symbol:'£', name:'British Pound'},
+  EUR: {symbol:'€', name:'Euro'}
+};
+const currencySelect = document.getElementById('currency');
+Object.keys(CURRENCIES).forEach(c=>{
+  const opt = document.createElement('option');
+  opt.value = c; opt.textContent = c;
+  currencySelect.appendChild(opt);
+});
+currencySelect.value = DB.currency || 'PKR';
+currencySelect.addEventListener('change', ()=>{
+  DB.currency = currencySelect.value; saveDB(); renderAll();
+});
+function fmt(n){
+  const sym = CURRENCIES[DB.currency].symbol;
+  const num = Number(n||0);
+  return sym + ' ' + num.toLocaleString(undefined,{maximumFractionDigits:2});
 }
 
-document.getElementById('currencySelect').addEventListener('change', (e) => {
-  currency = e.target.value;
-  localStorage.setItem('sanvault-currency', currency);
-  render();
+// ---------- Categories & bilingual auto-categorization ----------
+const CATEGORIES = {
+  expense: ['Rent/Kiraya','Supplies/Saman','Salary/Tankhwah','Utilities/Bijli-Gas','Transport','Marketing','Other Expense'],
+  income: ['Sales/Bikri','Service Payment','Customer Payment','Other Income']
+};
+const KEYWORD_MAP = [
+  {keys:['kiraya','rent','dukaan ka'], cat:'Rent/Kiraya', type:'expense'},
+  {keys:['saman','supply','stock','maal','inventory'], cat:'Supplies/Saman', type:'expense'},
+  {keys:['tankhwah','salary','wage','mazdoori'], cat:'Salary/Tankhwah', type:'expense'},
+  {keys:['bijli','gas','pani','electricity','utility','bill'], cat:'Utilities/Bijli-Gas', type:'expense'},
+  {keys:['transport','fuel','petrol','diesel','kiraya gaari','fare'], cat:'Transport', type:'expense'},
+  {keys:['marketing','ad','advertise','promo'], cat:'Marketing', type:'expense'},
+  {keys:['bikri','sale','sold','bicha'], cat:'Sales/Bikri', type:'income'},
+  {keys:['service','kaam ka paisa','labour charge'], cat:'Service Payment', type:'income'},
+  {keys:['customer se','payment mila','wasooli','udhaar wapis'], cat:'Customer Payment', type:'income'}
+];
+function autoDetect(desc, currentType){
+  const d = desc.toLowerCase();
+  for(const k of KEYWORD_MAP){
+    if(k.type === currentType && k.keys.some(w=>d.includes(w))) return k.cat;
+  }
+  return null;
+}
+
+// ---------- Nav / Tabs ----------
+document.querySelectorAll('.navitem').forEach(nav=>{
+  nav.addEventListener('click', ()=>{
+    document.querySelectorAll('.navitem').forEach(n=>n.classList.remove('active'));
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+    nav.classList.add('active');
+    document.getElementById('view-'+nav.dataset.view).classList.add('active');
+  });
 });
 
-async function saveEntries() {
-  try {
-    localStorage.setItem('sanvault-entries', JSON.stringify(entries));
-  } catch (e) {
-    console.error('Save failed', e);
-  }
-}
+// ---------- Modal helpers ----------
+function openModal(id){ document.getElementById(id).classList.add('show'); }
+function closeModal(id){ document.getElementById(id).classList.remove('show'); }
+document.querySelectorAll('[data-close]').forEach(el=>{
+  el.addEventListener('click', ()=>closeModal(el.dataset.close));
+});
+document.querySelectorAll('.modal-bg').forEach(bg=>{
+  bg.addEventListener('click', (e)=>{ if(e.target === bg) bg.classList.remove('show'); });
+});
 
-async function categorize(text, entryType) {
-  try {
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: "claude-sonnet-4-6",
-        max_tokens: 1000,
-        messages: [{
-          role: "user",
-          content: `You are a categorizer for a South Asian expense/income tracker used across Pakistan, India, and elsewhere. The user wrote this entry (may be in Urdu, Hindi, English, or a mix): "${text}"
-Entry type given by user: "${entryType}" (either "income" or "expense").
-
-Respond ONLY with JSON, no markdown, no preamble, in this exact shape:
-{"amount": <number>, "note": "<short clean description, 4-6 words, same language style as input>", "category": "<one word category>"}
-
-Category rules:
-- If entry type is "income", pick from: Salary, Business Income, Received Payment, Gift, Other Income
-- If entry type is "expense", pick from: Food, Travel, Rent, Bills, Shopping, Health, Education, Other Expense
-
-If no clear amount is found, use 0.`
-        }]
-      })
-    });
-    const data = await response.json();
-    const text2 = data.content.map(b => b.text || "").join("");
-    const clean = text2.replace(/```json|```/g, "").trim();
-    return JSON.parse(clean);
-  } catch (e) {
-    return { amount: 0, note: text, category: "Other" };
-  }
-}
-
-async function addEntry(type) {
-  const textarea = document.getElementById('entryText');
-  const text = textarea.value.trim();
-  if (!text) return;
-
-  const hint = document.getElementById('statusHint');
-  hint.textContent = "AI samajh raha hai...";
-  hint.classList.add('loading');
-  document.getElementById('addIn').disabled = true;
-  document.getElementById('addOut').disabled = true;
-
-  const parsed = await categorize(text, type === 'in' ? 'income' : 'expense');
-
-  entries.unshift({
-    id: Date.now(),
-    type: type,
-    amount: parsed.amount || 0,
-    note: parsed.note || text,
-    category: parsed.category || (type === 'in' ? 'Other Income' : 'Other Expense'),
-    date: new Date().toLocaleDateString('en-GB')
+// ---------- Transaction Modal ----------
+let currentTxnType = 'income';
+function refreshCategoryOptions(){
+  const sel = document.getElementById('txnCategory');
+  sel.innerHTML = '';
+  CATEGORIES[currentTxnType].forEach(c=>{
+    const o = document.createElement('option'); o.value = c; o.textContent = c; sel.appendChild(o);
   });
-
-  textarea.value = '';
-  hint.textContent = "Hindi, English, ya dono mix mein likh sakte hain — AI khud samajh lega.";
-  hint.classList.remove('loading');
-  document.getElementById('addIn').disabled = false;
-  document.getElementById('addOut').disabled = false;
-
-  await saveEntries();
-  render();
 }
-
-function render() {
-  let totalIn = 0, totalOut = 0;
-  entries.forEach(e => {
-    if (e.type === 'in') totalIn += e.amount;
-    else totalOut += e.amount;
+function refreshCustomerOptions(){
+  const sel = document.getElementById('txnCustomer');
+  sel.innerHTML = '<option value="">— None —</option>';
+  DB.customers.forEach(c=>{
+    const o = document.createElement('option'); o.value = c.id; o.textContent = c.name; sel.appendChild(o);
   });
-  document.getElementById('totalIn').textContent = currency + totalIn.toLocaleString('en-US');
-  document.getElementById('totalOut').textContent = currency + totalOut.toLocaleString('en-US');
-  const bal = totalIn - totalOut;
-  const balEl = document.getElementById('balance');
-  balEl.textContent = currency + bal.toLocaleString('en-US');
-  balEl.className = 'amt ' + (bal >= 0 ? 'green' : 'red');
-
-  const list = document.getElementById('entryList');
-  if (entries.length === 0) {
-    list.innerHTML = '<div class="empty">Abhi tak koi entry nahi. Upar likh kar shuru karein.</div>';
-    return;
+}
+document.getElementById('toggleIncome').addEventListener('click', ()=>{
+  currentTxnType = 'income';
+  document.getElementById('toggleIncome').classList.add('active-income');
+  document.getElementById('toggleExpense').classList.remove('active-expense');
+  refreshCategoryOptions();
+});
+document.getElementById('toggleExpense').addEventListener('click', ()=>{
+  currentTxnType = 'expense';
+  document.getElementById('toggleExpense').classList.add('active-expense');
+  document.getElementById('toggleIncome').classList.remove('active-income');
+  refreshCategoryOptions();
+});
+document.getElementById('txnDesc').addEventListener('input', (e)=>{
+  const cat = autoDetect(e.target.value, currentTxnType);
+  const hint = document.getElementById('autoCatHint');
+  if(cat){
+    document.getElementById('txnCategory').value = cat;
+    hint.textContent = '✓ Auto-detected: ' + cat;
+  } else { hint.textContent = ''; }
+});
+document.getElementById('fabAdd').addEventListener('click', ()=>{
+  document.getElementById('txnDesc').value = '';
+  document.getElementById('txnAmount').value = '';
+  document.getElementById('autoCatHint').textContent = '';
+  currentTxnType = 'income';
+  document.getElementById('toggleIncome').classList.add('active-income');
+  document.getElementById('toggleExpense').classList.remove('active-expense');
+  refreshCategoryOptions();
+  refreshCustomerOptions();
+  openModal('txnModalBg');
+});
+document.getElementById('saveTxnBtn').addEventListener('click', ()=>{
+  const desc = document.getElementById('txnDesc').value.trim();
+  const amount = parseFloat(document.getElementById('txnAmount').value);
+  const category = document.getElementById('txnCategory').value;
+  const customerId = document.getElementById('txnCustomer').value;
+  if(!desc || !amount || amount <= 0){ alert('Description aur sahi amount likhein'); return; }
+  const txn = {
+    id: Date.now().toString(),
+    type: currentTxnType,
+    desc, amount, category,
+    customerId: customerId || null,
+    date: new Date().toISOString()
+  };
+  DB.transactions.unshift(txn);
+  if(customerId){
+    const cust = DB.customers.find(c=>c.id === customerId);
+    if(cust){
+      // income linked to customer = they paid us (reduces what they owe)
+      // expense linked to customer = we paid them (reduces what we owe them) — simplistic model
+      if(currentTxnType === 'income') cust.balance -= amount;
+      else cust.balance += amount;
+    }
   }
-  list.innerHTML = entries.map(e => `
-    <div class="entry">
-      <div>
-        <div class="note">${e.note}</div>
-        <div class="cat">${e.category} · ${e.date}</div>
-      </div>
-      <div class="val" style="color: ${e.type === 'in' ? 'var(--green)' : 'var(--red)'}">
-        ${e.type === 'in' ? '+' : '−'}${currency}${e.amount.toLocaleString('en-US')}
-      </div>
+  saveDB();
+  closeModal('txnModalBg');
+  renderAll();
+});
+
+// ---------- Customer Modal ----------
+document.getElementById('addCustomerBtn').addEventListener('click', ()=>{
+  document.getElementById('custName').value = '';
+  document.getElementById('custOpeningAmt').value = '';
+  document.getElementById('custOpeningType').value = 'owe_me';
+  openModal('custModalBg');
+});
+document.getElementById('saveCustBtn').addEventListener('click', ()=>{
+  const name = document.getElementById('custName').value.trim();
+  const amt = parseFloat(document.getElementById('custOpeningAmt').value) || 0;
+  const type = document.getElementById('custOpeningType').value;
+  if(!name){ alert('Naam likhein'); return; }
+  const balance = type === 'owe_me' ? amt : -amt; // positive = they owe us
+  DB.customers.push({ id: Date.now().toString(), name, balance });
+  saveDB();
+  closeModal('custModalBg');
+  renderAll();
+});
+
+// ---------- Customer Detail ----------
+let activeCustomerId = null;
+function openCustomerDetail(id){
+  activeCustomerId = id;
+  const cust = DB.customers.find(c=>c.id === id);
+  if(!cust) return;
+  document.getElementById('custDetailName').textContent = cust.name;
+  const balEl = document.getElementById('custDetailBal');
+  balEl.textContent = fmt(Math.abs(cust.balance)) + (cust.balance > 0 ? ' (aap se lena hai)' : cust.balance < 0 ? ' (aap ne dena hai)' : ' (settled)');
+  balEl.className = 'value ' + (cust.balance > 0 ? 'they-owe' : cust.balance < 0 ? 'you-owe' : 'settled');
+  const hist = DB.transactions.filter(t=>t.customerId === id);
+  const histEl = document.getElementById('custDetailHistory');
+  histEl.innerHTML = hist.length ? '' : '<div class="empty">Koi history nahi</div>';
+  hist.forEach(t=>{
+    histEl.innerHTML += entryHTML(t);
+  });
+  openModal('custDetailBg');
+}
+document.getElementById('custPayReceived').addEventListener('click', ()=>{
+  const cust = DB.customers.find(c=>c.id === activeCustomerId);
+  const amt = parseFloat(prompt('Kitni payment mili?'));
+  if(!amt || amt <= 0) return;
+  cust.balance -= amt;
+  DB.transactions.unshift({id:Date.now().toString(), type:'income', desc:'Payment from '+cust.name, amount:amt, category:'Customer Payment', customerId:cust.id, date:new Date().toISOString()});
+  saveDB(); openCustomerDetail(cust.id); renderAll();
+});
+document.getElementById('custPayGiven').addEventListener('click', ()=>{
+  const cust = DB.customers.find(c=>c.id === activeCustomerId);
+  const amt = parseFloat(prompt('Kitni payment di?'));
+  if(!amt || amt <= 0) return;
+  cust.balance += amt;
+  DB.transactions.unshift({id:Date.now().toString(), type:'expense', desc:'Payment to '+cust.name, amount:amt, category:'Other Expense', customerId:cust.id, date:new Date().toISOString()});
+  saveDB(); openCustomerDetail(cust.id); renderAll();
+});
+
+// ---------- Render ----------
+function entryHTML(t){
+  const d = new Date(t.date);
+  const dateStr = d.toLocaleDateString('en-GB', {day:'2-digit', month:'short'});
+  return `<div class="entry">
+    <div class="left">
+      <div class="cat">${t.category}</div>
+      <div class="meta">${t.desc} • ${dateStr}</div>
     </div>
-  `).join('');
+    <div class="amt ${t.type}">${t.type === 'income' ? '+' : '-'} ${fmt(t.amount)}</div>
+  </div>`;
 }
+function renderAll(){
+  const income = DB.transactions.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0);
+  const expense = DB.transactions.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0);
+  document.getElementById('totalIncome').textContent = fmt(income);
+  document.getElementById('totalExpense').textContent = fmt(expense);
+  document.getElementById('netBalance').textContent = fmt(income - expense);
+  const netOwed = DB.customers.reduce((s,c)=>s+c.balance,0);
+  document.getElementById('netOwed').textContent = fmt(netOwed);
 
-document.getElementById('addIn').addEventListener('click', () => addEntry('in'));
-document.getElementById('addOut').addEventListener('click', () => addEntry('out'));
+  const recent = DB.transactions.slice(0,8);
+  document.getElementById('recentList').innerHTML = recent.length ? recent.map(entryHTML).join('') : '<div class="empty">Koi entry nahi. + button se shuru karein.</div>';
 
-loadEntries();
+  document.getElementById('fullList').innerHTML = DB.transactions.length ? DB.transactions.map(entryHTML).join('') : '<div class="empty">Koi entry nahi.</div>';
+
+  const custList = document.getElementById('customerList');
+  if(!DB.customers.length){
+    custList.innerHTML = '<div class="empty">Koi customer nahi. Neeche se add karein.</div>';
+  } else {
+    custList.innerHTML = DB.customers.map(c=>{
+      const cls = c.balance > 0 ? 'they-owe' : c.balance < 0 ? 'you-owe' : 'settled';
+      const label = c.balance > 0 ? 'lena hai' : c.balance < 0 ? 'dena hai' : 'settled';
+      return `<div class="customer-row" data-id="${c.id}">
+        <div class="name">${c.name}</div>
+        <div class="bal ${cls}">${fmt(Math.abs(c.balance))} <span style="font-size:10px; color:var(--muted);">${label}</span></div>
+      </div>`;
+    }).join('');
+    document.querySelectorAll('.customer-row').forEach(row=>{
+      row.addEventListener('click', ()=>openCustomerDetail(row.dataset.id));
+    });
+  }
+}
+refreshCategoryOptions();
+renderAll();
+
+// ---------- PWA install prompt ----------
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e)=>{
+  e.preventDefault();
+  deferredPrompt = e;
+  document.getElementById('installbar').classList.add('show');
+});
+document.getElementById('installBtn').addEventListener('click', async ()=>{
+  if(!deferredPrompt) return;
+  deferredPrompt.prompt();
+  await deferredPrompt.userChoice;
+  deferredPrompt = null;
+  document.getElementById('installbar').classList.remove('show');
+});
+window.addEventListener('appinstalled', ()=>{
+  document.getElementById('installbar').classList.remove('show');
+});
+
+// ---------- Service worker ----------
+if('serviceWorker' in navigator){
+  window.addEventListener('load', ()=>{
+    navigator.serviceWorker.register('./sw.js').catch(()=>{});
+  });
+}
 </script>
-
 </body>
 </html>
